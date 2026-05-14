@@ -1,0 +1,1789 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<!--
+==================================================================================
+  AI VIBE 2026 — LANDING PAGE TUYỂN HỌC VIÊN VTNet
+  Tổng Công ty Mạng lưới Viettel (Viettel Networks)
+==================================================================================
+
+  CẤU TRÚC 12 SECTION:
+  [01] NAV          — Sticky, blur khi cuộn
+  [02] HERO         — Full-height, gradient + particle, mockup laptop SVG
+  [03] TRUST BAR    — 4 con số counting + dải logo công cụ AI
+  [04] LỢI ÍCH      — 5 thẻ + so sánh Trước/Sau
+  [05] TARGET       — Đối tượng tham gia + yêu cầu đầu vào
+  [06] CONTENT      — 4 bước, 2 tab Cơ bản/Nâng cao
+  [07] DELIVERABLES — 2 sản phẩm bắt buộc
+  [08] PROGRAM INFO — Thay bảng giá: thông tin chương trình + quyền lợi
+  [09] FAQ          — 6 câu accordion
+  [10] CTA CUỐI     — Countdown + nút đăng ký lớn
+  [11] FOOTER       — Thông tin liên hệ
+  [12] FLOATING     — Sticky CTA bar, FOMO toast, Exit popup, Zalo button
+
+  ANIMATION LOGIC:
+  - IntersectionObserver: trigger fade-in/slide-up + counting number khi vào tầm nhìn
+  - CSS keyframes: bounce, pulse, glow, particle float, gradient shift
+  - JS countdown: cập nhật mỗi giây tới 23:59 07/05/2026
+  - Toast FOMO: setInterval 18s, luân phiên 7 tên mẫu
+  - Exit Intent: mouseleave qua đỉnh trang (chỉ 1 lần/session)
+
+  TECH STACK:
+  - HTML5 + TailwindCSS (CDN) + Vanilla JS
+  - Lucide Icons (CDN)
+  - Google Fonts: Inter (body) + Be Vietnam Pro (heading)
+==================================================================================
+-->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AI VIBE 2026 — Khóa đào tạo nội bộ VTNet hướng dẫn thiết kế Slide cơ bản & nâng cao bằng AI. 8h30-12h00 Thứ Sáu 08/05/2026. Hạn đăng ký 07/05/2026.">
+<title>AI VIBE 2026 — Hướng dẫn thiết kế Slide bằng AI | Viettel Networks</title>
+
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Be+Vietnam+Pro:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+
+<!-- Tailwind config -->
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          viettel: '#EE0033',
+          'viettel-dark': '#C8002B',
+          navy: '#1A1F3A',
+          'navy-deep': '#0F142A',
+          'text-navy': '#0F172A',
+          'text-gray': '#64748B',
+          'bg-soft': '#F8F9FB',
+          'ai-cyan': '#00D4FF',
+          'ai-purple': '#7C3AED',
+        },
+        fontFamily: {
+          sans: ['Inter', 'system-ui', 'sans-serif'],
+          heading: ['"Be Vietnam Pro"', 'Inter', 'sans-serif'],
+        },
+        boxShadow: {
+          'card': '0 4px 20px -4px rgba(15, 23, 42, 0.08)',
+          'card-hover': '0 20px 40px -10px rgba(15, 23, 42, 0.18)',
+          'cta': '0 10px 30px -5px rgba(238, 0, 51, 0.45)',
+          'cta-hover': '0 20px 50px -10px rgba(238, 0, 51, 0.65)',
+          'glow-cyan': '0 0 60px rgba(0, 212, 255, 0.4)',
+        },
+      },
+    },
+  }
+</script>
+
+<style>
+  /* ======== BASE ======== */
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    color: #0F172A;
+    background: #FFFFFF;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.6;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Be Vietnam Pro', Inter, sans-serif;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  /* ======== GRADIENTS ======== */
+  .gradient-text-ai {
+    background: linear-gradient(135deg, #EE0033 0%, #7C3AED 50%, #00D4FF 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 200% 200%;
+    animation: gradient-shift 6s ease infinite;
+    /* Vietnamese diacritics need vertical room — prevent clipping top & bottom */
+    line-height: 1.35;
+    padding-top: 0.12em;
+    padding-bottom: 0.12em;
+    display: inline-block;
+  }
+  .gradient-text-red-cyan {
+    background: linear-gradient(135deg, #EE0033 0%, #00D4FF 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1.35;
+    padding-top: 0.12em;
+    padding-bottom: 0.12em;
+    display: inline-block;
+  }
+  .bg-navy-gradient {
+    background: linear-gradient(135deg, #0F142A 0%, #1A1F3A 50%, #2A1F4A 100%);
+  }
+  .bg-cta-gradient {
+    background: linear-gradient(135deg, #1A1F3A 0%, #2A1F4A 40%, #EE0033 100%);
+  }
+
+  @keyframes gradient-shift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  /* ======== PARTICLES (Hero) ======== */
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0;
+    animation: particle-float 8s ease-in-out infinite;
+  }
+  @keyframes particle-float {
+    0%, 100% { transform: translate(0, 0); opacity: 0; }
+    20% { opacity: 0.6; }
+    50% { transform: translate(var(--tx, 30px), var(--ty, -50px)); opacity: 0.3; }
+    80% { opacity: 0.5; }
+  }
+
+  /* ======== ANIMATIONS ======== */
+  @keyframes bounce-soft {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  .bounce-soft { animation: bounce-soft 2s ease-in-out infinite; }
+
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 10px 30px -5px rgba(238, 0, 51, 0.45), 0 0 0 0 rgba(238, 0, 51, 0.5); }
+    50% { box-shadow: 0 15px 40px -5px rgba(238, 0, 51, 0.6), 0 0 0 12px rgba(238, 0, 51, 0); }
+  }
+  .pulse-glow { animation: pulse-glow 2.4s ease-in-out infinite; }
+
+  @keyframes glow-text {
+    0%, 100% { text-shadow: 0 0 20px rgba(0, 212, 255, 0.3); }
+    50% { text-shadow: 0 0 40px rgba(0, 212, 255, 0.6); }
+  }
+  .glow-text { animation: glow-text 3s ease-in-out infinite; }
+
+  /* Reveal on scroll */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-stagger > * {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal-stagger.is-visible > * {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-stagger.is-visible > *:nth-child(1) { transition-delay: 0ms; }
+  .reveal-stagger.is-visible > *:nth-child(2) { transition-delay: 100ms; }
+  .reveal-stagger.is-visible > *:nth-child(3) { transition-delay: 200ms; }
+  .reveal-stagger.is-visible > *:nth-child(4) { transition-delay: 300ms; }
+  .reveal-stagger.is-visible > *:nth-child(5) { transition-delay: 400ms; }
+  .reveal-stagger.is-visible > *:nth-child(6) { transition-delay: 500ms; }
+
+  /* ======== BUTTONS ======== */
+  .btn-primary {
+    background: linear-gradient(135deg, #EE0033 0%, #C8002B 100%);
+    color: white;
+    transition: all 0.25s ease;
+  }
+  .btn-primary:hover {
+    transform: scale(1.02) translateY(-1px);
+    box-shadow: 0 20px 50px -10px rgba(238, 0, 51, 0.65);
+  }
+  .btn-primary:active {
+    transform: scale(0.98);
+  }
+  .btn-outline {
+    border: 2px solid rgba(255,255,255,0.4);
+    color: white;
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(8px);
+    transition: all 0.25s ease;
+  }
+  .btn-outline:hover {
+    border-color: #00D4FF;
+    background: rgba(0, 212, 255, 0.1);
+    transform: scale(1.02);
+  }
+
+  /* ======== CARDS ======== */
+  .card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px -4px rgba(15, 23, 42, 0.08);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(15, 23, 42, 0.05);
+  }
+  .card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 24px 48px -12px rgba(15, 23, 42, 0.18);
+    border-color: rgba(238, 0, 51, 0.2);
+  }
+
+  /* ======== NAV BLUR ======== */
+  .nav-scrolled {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    box-shadow: 0 1px 0 rgba(15, 23, 42, 0.06), 0 8px 24px -8px rgba(15, 23, 42, 0.08);
+  }
+
+  /* ======== STEP NUMBER GLOW ======== */
+  .step-number {
+    background: linear-gradient(135deg, #EE0033 0%, #00D4FF 100%);
+    box-shadow: 0 0 30px rgba(0, 212, 255, 0.4), 0 8px 20px rgba(238, 0, 51, 0.3);
+  }
+
+  /* ======== FAQ ACCORDION ======== */
+  .faq-item .faq-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.4s ease;
+  }
+  .faq-item.open .faq-content {
+    max-height: 400px;
+    padding-top: 16px;
+  }
+  .faq-item.open .faq-icon {
+    transform: rotate(180deg);
+  }
+  .faq-icon { transition: transform 0.3s ease; }
+
+  /* ======== TAB ======== */
+  .tab-btn {
+    transition: all 0.3s ease;
+  }
+  .tab-btn.active {
+    background: linear-gradient(135deg, #EE0033 0%, #C8002B 100%);
+    color: white;
+    box-shadow: 0 10px 30px -5px rgba(238, 0, 51, 0.4);
+  }
+
+  /* ======== TOAST ======== */
+  .toast {
+    position: fixed;
+    left: 20px;
+    bottom: 90px;
+    z-index: 60;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.25);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transform: translateX(-120%);
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    max-width: 320px;
+    border-left: 3px solid #00D4FF;
+  }
+  .toast.show { transform: translateX(0); }
+  @media (max-width: 640px) {
+    .toast {
+      left: 12px;
+      right: 12px;
+      bottom: 100px;
+      max-width: none;
+    }
+  }
+
+  /* ======== STICKY CTA BAR ======== */
+  .sticky-cta {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    background: linear-gradient(135deg, #EE0033 0%, #C8002B 100%);
+    color: white;
+    padding: 12px 16px;
+    transform: translateY(100%);
+    transition: transform 0.4s ease;
+    box-shadow: 0 -10px 30px -5px rgba(0, 0, 0, 0.2);
+  }
+  .sticky-cta.show { transform: translateY(0); }
+
+  /* ======== EXIT POPUP ======== */
+  .exit-popup-bg {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 20, 42, 0.7);
+    backdrop-filter: blur(8px);
+    z-index: 100;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .exit-popup-bg.show {
+    display: flex;
+    opacity: 1;
+  }
+  .exit-popup-card {
+    background: white;
+    border-radius: 24px;
+    max-width: 480px;
+    width: 100%;
+    padding: 32px;
+    transform: scale(0.9);
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .exit-popup-bg.show .exit-popup-card {
+    transform: scale(1);
+  }
+
+  /* ======== ZALO FLOATING ======== */
+  .zalo-btn {
+    position: fixed;
+    right: 20px;
+    bottom: 100px;
+    z-index: 40;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #00D4FF 0%, #0084FF 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 30px -5px rgba(0, 132, 255, 0.5);
+    transition: all 0.3s ease;
+    animation: bounce-soft 3s ease-in-out infinite;
+  }
+  .zalo-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 15px 40px -5px rgba(0, 132, 255, 0.7);
+  }
+
+  /* ======== LAPTOP MOCKUP ======== */
+  .laptop-mockup {
+    filter: drop-shadow(0 30px 60px rgba(0, 212, 255, 0.25));
+  }
+
+  /* ======== PILL ======== */
+  .pill {
+    border-radius: 9999px;
+    padding: 6px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  /* Khi sticky bar hiện, đẩy nội dung body lên 1 chút để không bị đè */
+  body.has-sticky-bar { padding-bottom: 64px; }
+  @media (max-width: 640px) { body.has-sticky-bar { padding-bottom: 72px; } }
+
+  /* ======== UTILITY ======== */
+  .section-pad { padding-top: 100px; padding-bottom: 100px; }
+  @media (max-width: 768px) {
+    .section-pad { padding-top: 64px; padding-bottom: 64px; }
+  }
+
+  /* Hide scrollbar on logo strip */
+  .logo-strip::-webkit-scrollbar { display: none; }
+  .logo-strip { -ms-overflow-style: none; scrollbar-width: none; }
+
+  /* Logo grayscale->color hover */
+  .tool-logo {
+    filter: grayscale(100%) brightness(1.4);
+    opacity: 0.6;
+    transition: all 0.3s ease;
+  }
+  .tool-logo:hover {
+    filter: grayscale(0%) brightness(1);
+    opacity: 1;
+    transform: scale(1.05);
+  }
+
+  /* Reduce motion */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+</style>
+</head>
+
+<body class="bg-white">
+
+<!-- ============================================================
+     [01] NAV
+============================================================ -->
+<nav id="mainNav" class="fixed top-0 left-0 right-0 z-50 nav-scrolled transition-all duration-300">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16 lg:h-20">
+      <!-- Logo -->
+      <a href="#top" class="flex items-center gap-3 group" aria-label="Trang chủ AI VIBE 2026 — Viettel Networks">
+        <img src="data:image/png;base64,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" alt="Viettel Networks" class="h-9 lg:h-11 w-auto rounded-lg shadow-cta group-hover:scale-105 transition" />
+        <div class="hidden sm:flex items-center gap-2 pl-3 border-l border-gray-200 leading-tight">
+          <div>
+            <div class="text-[10px] lg:text-[11px] font-semibold text-text-gray tracking-widest uppercase">Khoá đào tạo</div>
+            <div class="text-sm lg:text-base font-heading font-bold text-text-navy">AI VIBE <span class="gradient-text-red-cyan">2026</span></div>
+          </div>
+        </div>
+      </a>
+
+      <!-- Menu desktop -->
+      <div class="hidden lg:flex items-center gap-7 text-sm font-medium text-text-navy">
+        <a href="#muc-tieu" class="hover:text-viettel transition">Mục tiêu</a>
+        <a href="#doi-tuong" class="hover:text-viettel transition">Đối tượng</a>
+        <a href="#noi-dung" class="hover:text-viettel transition">Nội dung</a>
+        <a href="#quyen-loi" class="hover:text-viettel transition">Quyền lợi</a>
+        <a href="#dang-ky" class="hover:text-viettel transition">Đăng ký</a>
+      </div>
+
+      <!-- Right -->
+      <div class="flex items-center gap-3">
+        <a href="tel:0989208017" class="hidden md:flex items-center gap-2 text-sm font-semibold text-text-navy hover:text-viettel transition" aria-label="Gọi hotline">
+          <i data-lucide="phone" class="w-4 h-4"></i>
+          <span>0989 208 017</span>
+        </a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeQahPyf_SKX8_Hl6cULX3S8hlCovC98bHRhV2ZvNA3tiz1BQ/viewform?usp=publish-editor" target="_blank" rel="noopener" class="btn-primary px-5 py-2.5 rounded-full text-sm font-bold shadow-cta">
+          Đăng ký ngay
+        </a>
+        <button id="mobileMenuBtn" class="lg:hidden text-text-navy" aria-label="Mở menu">
+          <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <div id="mobileMenu" class="lg:hidden hidden pb-4 pt-2 border-t border-gray-100">
+      <div class="flex flex-col gap-1 text-sm font-medium text-text-navy">
+        <a href="#muc-tieu" class="py-2.5 hover:text-viettel">Mục tiêu</a>
+        <a href="#doi-tuong" class="py-2.5 hover:text-viettel">Đối tượng</a>
+        <a href="#noi-dung" class="py-2.5 hover:text-viettel">Nội dung</a>
+        <a href="#quyen-loi" class="py-2.5 hover:text-viettel">Quyền lợi</a>
+        <a href="#dang-ky" class="py-2.5 hover:text-viettel">Đăng ký</a>
+        <a href="tel:0989208017" class="py-2.5 text-viettel font-semibold flex items-center gap-2">
+          <i data-lucide="phone" class="w-4 h-4"></i> 0989 208 017
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div id="top"></div>
+
+<!-- ============================================================
+     [02] HERO
+============================================================ -->
+<section class="relative bg-navy-gradient overflow-hidden pt-32 lg:pt-40 pb-16 lg:pb-24">
+  <!-- Particle background -->
+  <div id="particleField" class="absolute inset-0 pointer-events-none" aria-hidden="true"></div>
+
+  <!-- Glow orbs -->
+  <div class="absolute top-20 -left-32 w-96 h-96 bg-viettel/20 rounded-full blur-[120px]" aria-hidden="true"></div>
+  <div class="absolute bottom-0 right-0 w-[500px] h-[500px] bg-ai-cyan/15 rounded-full blur-[140px]" aria-hidden="true"></div>
+  <div class="absolute top-1/2 left-1/3 w-72 h-72 bg-ai-purple/15 rounded-full blur-[100px]" aria-hidden="true"></div>
+
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+      <!-- Left: Text -->
+      <div class="lg:col-span-7 reveal">
+        <!-- Eyebrow pill -->
+        <div class="inline-flex items-center gap-2 pill border border-ai-cyan/40 bg-ai-cyan/5 text-ai-cyan mb-6">
+          <span class="w-2 h-2 rounded-full bg-ai-cyan animate-pulse"></span>
+          🚀 CHƯƠNG TRÌNH ĐÀO TẠO NỘI BỘ — VIETTEL NETWORKS
+        </div>
+
+        <!-- H1 -->
+        <h1 class="font-heading font-extrabold text-white text-3xl sm:text-4xl lg:text-5xl leading-[1.35] tracking-tight mb-6">
+          <span class="block whitespace-nowrap">HƯỚNG DẪN THIẾT KẾ</span>
+          <span class="block gradient-text-ai whitespace-nowrap text-2xl sm:text-3xl lg:text-[44px] xl:text-5xl">SLIDE CƠ BẢN &amp; NÂNG CAO</span>
+          <span class="block text-white/90 text-2xl sm:text-3xl lg:text-4xl">BẰNG AI</span>
+        </h1>
+
+        <!-- Subheadline -->
+        <p class="text-lg lg:text-xl text-white/75 leading-relaxed max-w-2xl mb-8">
+          Từ ý tưởng đến Slide đỉnh cao &amp; Landing Page chuyên nghiệp.<br>
+          <strong class="text-white">Bạn không cần biết code. Bạn chỉ cần biết mình muốn gì</strong> — AI sẽ làm phần còn lại.
+        </p>
+
+        <!-- CTA buttons -->
+        <div class="flex flex-col sm:flex-row gap-4 mb-10">
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSeQahPyf_SKX8_Hl6cULX3S8hlCovC98bHRhV2ZvNA3tiz1BQ/viewform?usp=publish-editor" target="_blank" rel="noopener" class="btn-primary inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full text-base font-bold shadow-cta">
+            <i data-lucide="rocket" class="w-5 h-5"></i>
+            Đăng ký ngay — Hạn 07/05/2026
+          </a>
+          <a href="#noi-dung" class="btn-outline inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full text-base font-bold">
+            <i data-lucide="clipboard-list" class="w-5 h-5"></i>
+            Xem nội dung chi tiết
+          </a>
+        </div>
+
+        <!-- Social proof chips -->
+        <div class="flex flex-wrap gap-3">
+          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur border border-white/15 text-white text-sm font-medium">
+            <i data-lucide="zap" class="w-4 h-4 text-ai-cyan"></i> 3,5 giờ học nhanh
+          </div>
+          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur border border-white/15 text-white text-sm font-medium">
+            <i data-lucide="palette" class="w-4 h-4 text-ai-purple"></i> 2 sản phẩm thật
+          </div>
+          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur border border-white/15 text-white text-sm font-medium">
+            <i data-lucide="award" class="w-4 h-4 text-viettel"></i> Chứng nhận đáp ứng KNL
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Laptop mockup -->
+      <div class="lg:col-span-5 reveal" style="transition-delay: 200ms;">
+        <div class="laptop-mockup relative">
+          <!-- SVG laptop -->
+          <svg viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg" class="w-full h-auto" aria-label="Mockup giao diện Claude đang sinh slide">
+            <!-- Screen frame -->
+            <rect x="60" y="20" width="480" height="300" rx="14" fill="#1A1F3A" stroke="#2A2F4A" stroke-width="2"/>
+            <!-- Screen inner -->
+            <rect x="74" y="34" width="452" height="272" rx="6" fill="#0F142A"/>
+
+            <!-- Top bar dots -->
+            <circle cx="92" cy="50" r="4" fill="#FF5F57"/>
+            <circle cx="106" cy="50" r="4" fill="#FEBC2E"/>
+            <circle cx="120" cy="50" r="4" fill="#28C840"/>
+
+            <!-- Sidebar -->
+            <rect x="84" y="68" width="100" height="228" rx="6" fill="#1A1F3A"/>
+            <rect x="92" y="78" width="84" height="8" rx="3" fill="#EE0033"/>
+            <rect x="92" y="94" width="60" height="6" rx="2" fill="#3A3F5A"/>
+            <rect x="92" y="108" width="72" height="6" rx="2" fill="#3A3F5A"/>
+            <rect x="92" y="122" width="50" height="6" rx="2" fill="#3A3F5A"/>
+
+            <!-- Main canvas (slide preview) -->
+            <rect x="194" y="68" width="324" height="180" rx="6" fill="#FFFFFF"/>
+            <!-- Slide content -->
+            <rect x="208" y="82" width="160" height="10" rx="2" fill="#EE0033"/>
+            <rect x="208" y="100" width="220" height="6" rx="2" fill="#1A1F3A"/>
+            <rect x="208" y="112" width="180" height="6" rx="2" fill="#64748B"/>
+            <rect x="208" y="124" width="200" height="6" rx="2" fill="#64748B"/>
+
+            <!-- Mini chart bars -->
+            <rect x="208" y="150" width="20" height="40" fill="url(#barGrad1)"/>
+            <rect x="234" y="160" width="20" height="30" fill="url(#barGrad1)"/>
+            <rect x="260" y="140" width="20" height="50" fill="url(#barGrad1)"/>
+            <rect x="286" y="155" width="20" height="35" fill="url(#barGrad1)"/>
+            <rect x="312" y="135" width="20" height="55" fill="url(#barGrad1)"/>
+            <rect x="338" y="145" width="20" height="45" fill="url(#barGrad1)"/>
+
+            <!-- AI prompt box bottom -->
+            <rect x="194" y="258" width="324" height="38" rx="6" fill="#1A2238" stroke="#00D4FF" stroke-width="1"/>
+            <circle cx="208" cy="277" r="6" fill="url(#aiGrad)"/>
+            <rect x="222" y="270" width="200" height="5" rx="2" fill="#00D4FF" opacity="0.8"/>
+            <rect x="222" y="280" width="160" height="5" rx="2" fill="#7C3AED" opacity="0.6"/>
+
+            <!-- Cursor blink -->
+            <rect x="490" y="270" width="2" height="14" fill="#00D4FF">
+              <animate attributeName="opacity" values="1;0;1" dur="1s" repeatCount="indefinite"/>
+            </rect>
+
+            <!-- Laptop base -->
+            <path d="M 30 320 L 570 320 L 590 360 L 10 360 Z" fill="#2A2F4A"/>
+            <rect x="260" y="320" width="80" height="6" rx="2" fill="#1A1F3A"/>
+
+            <!-- Defs -->
+            <defs>
+              <linearGradient id="barGrad1" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#EE0033"/>
+                <stop offset="100%" stop-color="#7C3AED"/>
+              </linearGradient>
+              <linearGradient id="aiGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#00D4FF"/>
+                <stop offset="100%" stop-color="#7C3AED"/>
+              </linearGradient>
+            </defs>
+          </svg>
+
+          <!-- Floating badge -->
+          <div class="absolute -top-4 -right-2 sm:-right-6 bg-white rounded-2xl shadow-xl px-4 py-3 flex items-center gap-2 border border-ai-cyan/20" style="animation: bounce-soft 4s ease-in-out infinite;">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-ai-cyan to-ai-purple flex items-center justify-center">
+              <i data-lucide="sparkles" class="w-4 h-4 text-white"></i>
+            </div>
+            <div class="leading-tight">
+              <div class="text-[10px] text-text-gray font-semibold uppercase tracking-wide">AI sinh slide</div>
+              <div class="text-sm font-bold text-text-navy">Trong 30 phút</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll arrow -->
+    <div class="flex justify-center mt-12 lg:mt-16">
+      <a href="#trust" class="text-white/50 hover:text-ai-cyan transition" aria-label="Cuộn xuống">
+        <i data-lucide="chevron-down" class="w-8 h-8 bounce-soft"></i>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [03] TRUST BAR
+============================================================ -->
+<section id="trust" class="bg-bg-soft section-pad">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Counters -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 reveal-stagger">
+      <div class="text-center">
+        <div class="text-5xl lg:text-6xl font-heading font-extrabold gradient-text-red-cyan">
+          <span class="counter" data-target="3.5" data-decimals="1">0</span><span class="text-3xl">h</span>
+        </div>
+        <div class="text-sm lg:text-base text-text-gray font-medium mt-2">học nhanh, đủ dùng</div>
+      </div>
+      <div class="text-center">
+        <div class="text-5xl lg:text-6xl font-heading font-extrabold gradient-text-red-cyan">
+          <span class="counter" data-target="2">0</span>
+        </div>
+        <div class="text-sm lg:text-base text-text-gray font-medium mt-2">sản phẩm thật mang về</div>
+      </div>
+      <div class="text-center">
+        <div class="text-5xl lg:text-6xl font-heading font-extrabold gradient-text-red-cyan">
+          ≥<span class="counter" data-target="7">0</span><span class="text-3xl">/10</span>
+        </div>
+        <div class="text-sm lg:text-base text-text-gray font-medium mt-2">điểm đạt chuẩn</div>
+      </div>
+      <div class="text-center">
+        <div class="text-5xl lg:text-6xl font-heading font-extrabold gradient-text-red-cyan">
+          <span class="counter" data-target="100">0</span><span class="text-3xl">%</span>
+        </div>
+        <div class="text-sm lg:text-base text-text-gray font-medium mt-2">được cấp chứng nhận khi đạt</div>
+      </div>
+    </div>
+
+    <!-- Tools strip -->
+    <div class="mt-16 reveal">
+      <div class="text-center text-sm font-semibold text-text-gray uppercase tracking-widest mb-6">
+        Công cụ AI bạn sẽ làm chủ
+      </div>
+      <div class="logo-strip flex flex-wrap items-center justify-center gap-x-10 gap-y-6 lg:gap-x-14">
+        <div class="tool-logo flex items-center gap-2 text-text-navy font-heading font-bold text-lg">
+          <span class="w-8 h-8 rounded-lg bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center text-white text-xs">C</span>
+          Claude
+        </div>
+        <div class="tool-logo flex items-center gap-2 text-text-navy font-heading font-bold text-lg">
+          <span class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white">
+            <i data-lucide="sparkles" class="w-4 h-4"></i>
+          </span>
+          Gemini
+        </div>
+        <div class="tool-logo flex items-center gap-2 text-text-navy font-heading font-bold text-lg">
+          <span class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white">
+            <i data-lucide="book-open" class="w-4 h-4"></i>
+          </span>
+          NotebookLM
+        </div>
+        <div class="tool-logo flex items-center gap-2 text-text-navy font-heading font-bold text-lg">
+          <span class="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center text-white">
+            <i data-lucide="palette" class="w-4 h-4"></i>
+          </span>
+          Canva
+        </div>
+        <div class="tool-logo flex items-center gap-2 text-text-navy font-heading font-bold text-lg">
+          <span class="w-8 h-8 rounded-lg bg-text-navy flex items-center justify-center text-white">
+            <i data-lucide="github" class="w-4 h-4"></i>
+          </span>
+          GitHub
+        </div>
+      </div>
+
+      <!-- Badge -->
+      <div class="flex justify-center mt-10">
+        <div class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-viettel/5 border border-viettel/20 text-viettel font-bold text-sm">
+          <i data-lucide="badge-check" class="w-5 h-5"></i>
+          Đáp ứng KNL kỹ năng AI — VTNet 2026
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [04] LỢI ÍCH CỐT LÕI
+============================================================ -->
+<section id="muc-tieu" class="section-pad bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-3xl mx-auto mb-14 reveal">
+      <div class="inline-block pill bg-viettel/10 text-viettel mb-4">01 — MỤC TIÊU CHƯƠNG TRÌNH</div>
+      <h2 class="font-heading font-extrabold text-3xl sm:text-4xl lg:text-5xl text-text-navy mb-4">
+        Học để làm được việc thật,<br>
+        <span class="gradient-text-red-cyan">không phải học cho biết</span>
+      </h2>
+      <p class="text-lg text-text-gray">5 năng lực cốt lõi bạn sẽ sở hữu sau buổi sáng Thứ Sáu này.</p>
+    </div>
+
+    <!-- 5 cards: 3-2 layout on desktop -->
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 reveal-stagger">
+      <!-- Card 1 -->
+      <div class="card p-7">
+        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-viettel to-viettel-dark flex items-center justify-center mb-5">
+          <i data-lucide="zap" class="w-7 h-7 text-white"></i>
+        </div>
+        <h3 class="font-heading font-bold text-xl text-text-navy mb-2">Slide trong dưới 30 phút</h3>
+        <p class="text-text-gray leading-relaxed">Claude / Gemini / Canva sinh slide chuẩn brand Viettel — thay vì 3-5 tiếng làm thủ công.</p>
+      </div>
+      <!-- Card 2 -->
+      <div class="card p-7">
+        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-ai-purple to-indigo-600 flex items-center justify-center mb-5">
+          <i data-lucide="wrench" class="w-7 h-7 text-white"></i>
+        </div>
+        <h3 class="font-heading font-bold text-xl text-text-navy mb-2">Làm chủ Skill Claude</h3>
+        <p class="text-text-gray leading-relaxed">Đóng gói quy trình lặp đi lặp lại thành công cụ dùng lại được — viết một lần, dùng mãi.</p>
+      </div>
+      <!-- Card 3 -->
+      <div class="card p-7">
+        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-ai-cyan to-blue-600 flex items-center justify-center mb-5">
+          <i data-lucide="globe" class="w-7 h-7 text-white"></i>
+        </div>
+        <h3 class="font-heading font-bold text-xl text-text-navy mb-2">Tự build Landing Page</h3>
+        <p class="text-text-gray leading-relaxed">Không cần HTML/CSS — public lên GitHub miễn phí, có URL chia sẻ ngay trong buổi học.</p>
+      </div>
+      <!-- Card 4 -->
+      <div class="card p-7">
+        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center mb-5">
+          <i data-lucide="brain" class="w-7 h-7 text-white"></i>
+        </div>
+        <h3 class="font-heading font-bold text-xl text-text-navy mb-2">Tư duy Vibe Coding</h3>
+        <p class="text-text-gray leading-relaxed">Mô tả ý tưởng → AI sinh sản phẩm → bạn tinh chỉnh → xuất bản. Đơn giản vậy thôi.</p>
+      </div>
+      <!-- Card 5 -->
+      <div class="card p-7">
+        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center mb-5">
+          <i data-lucide="award" class="w-7 h-7 text-white"></i>
+        </div>
+        <h3 class="font-heading font-bold text-xl text-text-navy mb-2">Chứng nhận đạt chuẩn</h3>
+        <p class="text-text-gray leading-relaxed">Đáp ứng KNL kỹ năng AI cho VTNet 2026 — ghi nhận chính thức trong hồ sơ năng lực.</p>
+      </div>
+      <!-- Card 6: Before/After comparison -->
+      <div class="card p-7 bg-gradient-to-br from-navy-deep to-navy text-white border-0">
+        <div class="text-xs uppercase tracking-widest text-ai-cyan font-bold mb-4">Trước & Sau</div>
+        <div class="space-y-3">
+          <div class="flex items-start gap-3 p-3 rounded-lg bg-white/5 border border-red-400/20">
+            <i data-lucide="x-circle" class="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5"></i>
+            <div>
+              <div class="font-bold text-white">3-5 tiếng làm thủ công</div>
+              <div class="text-xs text-white/60">Sửa đi sửa lại, mệt mỏi</div>
+            </div>
+          </div>
+          <div class="flex items-start gap-3 p-3 rounded-lg bg-ai-cyan/10 border border-ai-cyan/30">
+            <i data-lucide="check-circle-2" class="w-5 h-5 text-ai-cyan flex-shrink-0 mt-0.5"></i>
+            <div>
+              <div class="font-bold text-white">30 phút với AI</div>
+              <div class="text-xs text-white/70">Đẹp, chuẩn, dùng được ngay</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [05] AI VIBE DÀNH CHO AI
+============================================================ -->
+<section id="doi-tuong" class="section-pad relative overflow-hidden">
+  <div class="absolute inset-0 bg-gradient-to-br from-navy-deep via-navy to-indigo-950" aria-hidden="true"></div>
+  <div class="absolute top-0 right-0 w-96 h-96 bg-ai-purple/20 rounded-full blur-[120px]" aria-hidden="true"></div>
+  <div class="absolute bottom-0 left-0 w-96 h-96 bg-viettel/15 rounded-full blur-[120px]" aria-hidden="true"></div>
+
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-3xl mx-auto mb-14 reveal">
+      <div class="inline-block pill bg-ai-cyan/10 text-ai-cyan border border-ai-cyan/30 mb-4">02 — ĐỐI TƯỢNG THAM GIA</div>
+      <h2 class="font-heading font-extrabold text-3xl sm:text-4xl lg:text-5xl text-white mb-4">
+        KHÓA HỌC <span class="gradient-text-red-cyan">dành cho ai?</span>
+      </h2>
+      <p class="text-lg text-white/70 italic">"Tinh thần 'thử nó xem sao' — không cần kinh nghiệm code hay design trước đó"</p>
+    </div>
+
+    <div class="grid lg:grid-cols-2 gap-6 lg:gap-8">
+      <!-- Left: nên tham gia -->
+      <div class="reveal bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-7 lg:p-9">
+        <h3 class="font-heading font-bold text-2xl text-white mb-6 flex items-center gap-3">
+          <span class="w-10 h-10 rounded-xl bg-emerald-500 flex items-center justify-center">
+            <i data-lucide="check" class="w-6 h-6 text-white"></i>
+          </span>
+          Bạn nên tham gia nếu
+        </h3>
+        <ul class="space-y-4">
+          <li class="flex items-start gap-3">
+            <i data-lucide="check-circle-2" class="w-6 h-6 text-emerald-400 flex-shrink-0 mt-0.5"></i>
+            <span class="text-white/85">Bạn thường xuyên phải làm <strong class="text-white">slide báo cáo, slide đào tạo, slide giới thiệu</strong> sản phẩm/quy trình của VTNet.</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <i data-lucide="check-circle-2" class="w-6 h-6 text-emerald-400 flex-shrink-0 mt-0.5"></i>
+            <span class="text-white/85">Bạn muốn <strong class="text-white">tăng tốc công việc</strong> nhưng chưa biết bắt đầu với AI từ đâu.</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <i data-lucide="check-circle-2" class="w-6 h-6 text-emerald-400 flex-shrink-0 mt-0.5"></i>
+            <span class="text-white/85">Bạn tò mò về <strong class="text-white">Vibe Coding</strong> — cách dùng AI để xây sản phẩm số mà không cần biết code.</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <i data-lucide="check-circle-2" class="w-6 h-6 text-emerald-400 flex-shrink-0 mt-0.5"></i>
+            <span class="text-white/85">Bạn cần <strong class="text-white">chứng nhận đáp ứng KNL kỹ năng AI</strong> theo yêu cầu VTNet 2026.</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Right: yêu cầu đầu vào -->
+      <div class="reveal bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-7 lg:p-9" style="transition-delay: 150ms;">
+        <h3 class="font-heading font-bold text-2xl text-white mb-6 flex items-center gap-3">
+          <span class="w-10 h-10 rounded-xl bg-ai-cyan flex items-center justify-center">
+            <i data-lucide="clipboard-list" class="w-6 h-6 text-white"></i>
+          </span>
+          Yêu cầu đầu vào
+        </h3>
+        <ul class="space-y-4">
+          <li class="flex items-start gap-3">
+            <i data-lucide="laptop" class="w-6 h-6 text-ai-cyan flex-shrink-0 mt-0.5"></i>
+            <span class="text-white/85">Một <strong class="text-white">laptop cá nhân</strong> đã cài trình duyệt Chrome/Edge mới nhất.</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <i data-lucide="user-circle" class="w-6 h-6 text-ai-cyan flex-shrink-0 mt-0.5"></i>
+            <span class="text-white/85">Một <strong class="text-white">tài khoản Google</strong> hoạt động (dùng cho Gemini, NotebookLM, GitHub).</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <i data-lucide="sparkles" class="w-6 h-6 text-ai-cyan flex-shrink-0 mt-0.5"></i>
+            <span class="text-white/85">Tinh thần <strong class="text-white">"thử nó xem sao"</strong> — không cần kinh nghiệm code hay design trước đó.</span>
+          </li>
+        </ul>
+
+        <div class="mt-6 p-4 rounded-xl bg-gradient-to-r from-ai-cyan/10 to-ai-purple/10 border border-ai-cyan/20">
+          <p class="text-sm text-white/80">
+            <i data-lucide="info" class="w-4 h-4 inline text-ai-cyan"></i>
+            Tài khoản AI <strong class="text-white">không bắt buộc trả phí</strong> — bản miễn phí đủ hoàn thành cả 2 sản phẩm.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [06] CÁCH THỨC HOẠT ĐỘNG (4 BƯỚC, 2 TAB)
+============================================================ -->
+<section id="noi-dung" class="section-pad bg-bg-soft">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-3xl mx-auto mb-12 reveal">
+      <div class="inline-block pill bg-ai-purple/10 text-ai-purple mb-4">03 — NỘI DUNG ĐÀO TẠO</div>
+      <h2 class="font-heading font-extrabold text-3xl sm:text-4xl lg:text-5xl text-text-navy mb-4">
+        Bạn sẽ học gì <span class="gradient-text-red-cyan">trong 3,5 giờ?</span>
+      </h2>
+      <p class="text-lg text-text-gray">4 bước rõ ràng — mỗi bước là một viên gạch xây nên năng lực AI thực dụng của bạn.</p>
+    </div>
+
+    <!-- Tab buttons -->
+    <div class="flex justify-center mb-10 reveal">
+      <div class="inline-flex p-1.5 bg-white rounded-full shadow-card border border-gray-100">
+        <button class="tab-btn active px-6 py-3 rounded-full font-bold text-sm" data-tab="basic">
+          PHẦN 1 — CƠ BẢN
+        </button>
+        <button class="tab-btn px-6 py-3 rounded-full font-bold text-sm text-text-navy" data-tab="advanced">
+          PHẦN 2 — NÂNG CAO
+        </button>
+      </div>
+    </div>
+
+    <!-- TAB BASIC: Bước 1 + 2 -->
+    <div id="tab-basic" class="tab-content">
+      <div class="grid lg:grid-cols-2 gap-6 lg:gap-8 reveal-stagger">
+        <!-- Bước 1 -->
+        <div class="card p-7 lg:p-8">
+          <div class="flex items-start gap-5 mb-5">
+            <div class="step-number flex-shrink-0 w-16 h-16 rounded-2xl flex items-center justify-center text-white font-heading font-extrabold text-2xl">1</div>
+            <div class="flex-1">
+              <div class="text-xs font-bold text-viettel uppercase tracking-widest mb-1">Bước 1 · ~45 phút</div>
+              <h3 class="font-heading font-bold text-xl lg:text-2xl text-text-navy">📄 Xây tài liệu nguồn chuẩn</h3>
+            </div>
+          </div>
+          <p class="text-text-gray leading-relaxed mb-5">
+            Nền móng của một slide đẹp không phải là design — mà là <strong class="text-text-navy">thông tin được cấu trúc tốt</strong>. Bạn học cách viết tài liệu nguồn theo template để AI hiểu đúng ý.
+          </p>
+          <!-- Mockup -->
+          <div class="rounded-xl bg-gradient-to-br from-bg-soft to-white border border-gray-100 p-4 font-mono text-xs">
+            <div class="flex items-center gap-1.5 mb-3">
+              <div class="w-2 h-2 rounded-full bg-red-400"></div>
+              <div class="w-2 h-2 rounded-full bg-amber-400"></div>
+              <div class="w-2 h-2 rounded-full bg-emerald-400"></div>
+              <span class="text-text-gray ml-2">tai-lieu-nguon.md</span>
+            </div>
+            <div class="space-y-1.5 text-text-navy">
+              <div><span class="text-viettel"># Tiêu đề chính</span></div>
+              <div><span class="text-text-gray">## Thông điệp cốt lõi</span></div>
+              <div><span class="text-text-gray">- Dữ liệu / con số</span></div>
+              <div><span class="text-text-gray">- Câu chuyện / ví dụ</span></div>
+              <div><span class="text-ai-purple">→ AI sẽ tự bố cục slide</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bước 2 -->
+        <div class="card p-7 lg:p-8">
+          <div class="flex items-start gap-5 mb-5">
+            <div class="step-number flex-shrink-0 w-16 h-16 rounded-2xl flex items-center justify-center text-white font-heading font-extrabold text-2xl">2</div>
+            <div class="flex-1">
+              <div class="text-xs font-bold text-viettel uppercase tracking-widest mb-1">Bước 2 · ~60 phút</div>
+              <h3 class="font-heading font-bold text-xl lg:text-2xl text-text-navy">🤖 Sinh slide tự động bằng AI</h3>
+            </div>
+          </div>
+          <p class="text-text-gray leading-relaxed mb-5">
+            Cùng một tài liệu nguồn — bạn sẽ thử với <strong class="text-text-navy">Claude, Gemini và NotebookLM</strong> để chọn công cụ hợp nhất với phong cách của mình. Chỉnh nhanh trên Canva.
+          </p>
+          <!-- Mockup: 3 logos with arrows -->
+          <div class="rounded-xl bg-gradient-to-br from-navy-deep to-navy p-5 text-white">
+            <div class="flex items-center justify-between gap-2">
+              <div class="flex flex-col items-center gap-1.5">
+                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center font-bold">C</div>
+                <div class="text-[10px] text-white/70">Claude</div>
+              </div>
+              <i data-lucide="arrow-right" class="w-4 h-4 text-ai-cyan"></i>
+              <div class="flex flex-col items-center gap-1.5">
+                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
+                  <i data-lucide="sparkles" class="w-5 h-5"></i>
+                </div>
+                <div class="text-[10px] text-white/70">Gemini</div>
+              </div>
+              <i data-lucide="arrow-right" class="w-4 h-4 text-ai-cyan"></i>
+              <div class="flex flex-col items-center gap-1.5">
+                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
+                  <i data-lucide="book-open" class="w-5 h-5"></i>
+                </div>
+                <div class="text-[10px] text-white/70">NotebookLM</div>
+              </div>
+              <i data-lucide="arrow-right" class="w-4 h-4 text-ai-cyan"></i>
+              <div class="flex flex-col items-center gap-1.5">
+                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center">
+                  <i data-lucide="palette" class="w-5 h-5"></i>
+                </div>
+                <div class="text-[10px] text-white/70">Canva</div>
+              </div>
+            </div>
+            <div class="text-center text-xs text-ai-cyan font-bold mt-3">Slide chuẩn brand Viettel</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB ADVANCED: Bước 3 + 4 -->
+    <div id="tab-advanced" class="tab-content hidden">
+      <div class="grid lg:grid-cols-2 gap-6 lg:gap-8 reveal-stagger">
+        <!-- Bước 3 -->
+        <div class="card p-7 lg:p-8">
+          <div class="flex items-start gap-5 mb-5">
+            <div class="step-number flex-shrink-0 w-16 h-16 rounded-2xl flex items-center justify-center text-white font-heading font-extrabold text-2xl">3</div>
+            <div class="flex-1">
+              <div class="text-xs font-bold text-viettel uppercase tracking-widest mb-1">Bước 3 · ~50 phút</div>
+              <h3 class="font-heading font-bold text-xl lg:text-2xl text-text-navy">🔧 Thiết kế Skill Claude của riêng bạn</h3>
+            </div>
+          </div>
+          <p class="text-text-gray leading-relaxed mb-5">
+            Đóng gói quy trình lặp đi lặp lại thành <strong class="text-text-navy">một Skill dùng lại được</strong> — viết một lần, dùng mãi. Tuần sau gặp tình huống tương tự, chỉ cần gọi tên Skill.
+          </p>
+          <!-- Mockup: skill structure -->
+          <div class="rounded-xl bg-gradient-to-br from-bg-soft to-white border border-gray-100 p-4">
+            <div class="flex items-center gap-2 mb-3 text-xs font-mono text-text-gray">
+              <i data-lucide="folder" class="w-4 h-4 text-amber-500"></i>
+              <span>my-skill/</span>
+            </div>
+            <div class="ml-4 space-y-1.5 text-xs font-mono">
+              <div class="flex items-center gap-2 text-text-navy">
+                <i data-lucide="file-text" class="w-3.5 h-3.5 text-ai-cyan"></i>
+                <span>SKILL.md <span class="text-text-gray">— hướng dẫn AI</span></span>
+              </div>
+              <div class="flex items-center gap-2 text-text-navy">
+                <i data-lucide="file-code-2" class="w-3.5 h-3.5 text-ai-purple"></i>
+                <span>template.docx <span class="text-text-gray">— mẫu chuẩn</span></span>
+              </div>
+              <div class="flex items-center gap-2 text-text-navy">
+                <i data-lucide="file-text" class="w-3.5 h-3.5 text-emerald-500"></i>
+                <span>examples/ <span class="text-text-gray">— ví dụ</span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bước 4 -->
+        <div class="card p-7 lg:p-8">
+          <div class="flex items-start gap-5 mb-5">
+            <div class="step-number flex-shrink-0 w-16 h-16 rounded-2xl flex items-center justify-center text-white font-heading font-extrabold text-2xl">4</div>
+            <div class="flex-1">
+              <div class="text-xs font-bold text-viettel uppercase tracking-widest mb-1">Bước 4 · ~55 phút</div>
+              <h3 class="font-heading font-bold text-xl lg:text-2xl text-text-navy">🌐 Tạo Landing Page &amp; Public lên GitHub</h3>
+            </div>
+          </div>
+          <p class="text-text-gray leading-relaxed mb-5">
+            Phần Bonus — bạn sẽ có một <strong class="text-text-navy">URL thật, hoạt động trên mọi thiết bị</strong>, hosted miễn phí trên GitHub Pages. Chia sẻ ngay với đồng nghiệp/khách hàng.
+          </p>
+          <!-- Mockup: URL bar -->
+          <div class="rounded-xl bg-gradient-to-br from-navy-deep to-navy p-5 text-white">
+            <div class="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/10 border border-white/15">
+              <i data-lucide="lock" class="w-3.5 h-3.5 text-emerald-400"></i>
+              <span class="text-xs font-mono text-white/80">yourname.github.io/<span class="text-ai-cyan">my-page</span></span>
+              <i data-lucide="external-link" class="w-3.5 h-3.5 text-white/50 ml-auto"></i>
+            </div>
+            <div class="flex items-center gap-2 mt-3 text-xs">
+              <i data-lucide="zap" class="w-4 h-4 text-amber-400"></i>
+              <span class="text-white/70">Public ngay trong buổi học · Hoàn toàn miễn phí</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA after content -->
+    <div class="text-center mt-12 reveal">
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSeQahPyf_SKX8_Hl6cULX3S8hlCovC98bHRhV2ZvNA3tiz1BQ/viewform?usp=publish-editor" target="_blank" rel="noopener" class="btn-primary inline-flex items-center gap-2 px-8 py-4 rounded-full font-bold text-base shadow-cta">
+        <i data-lucide="rocket" class="w-5 h-5"></i>
+        Tôi muốn đăng ký ngay
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [07] BẠN SẼ MANG GÌ VỀ
+============================================================ -->
+<section id="quyen-loi" class="section-pad relative overflow-hidden">
+  <div class="absolute inset-0 bg-gradient-to-br from-cyan-50 via-white to-purple-50" aria-hidden="true"></div>
+  <div class="absolute top-1/4 left-0 w-72 h-72 bg-ai-cyan/15 rounded-full blur-[100px]" aria-hidden="true"></div>
+  <div class="absolute bottom-1/4 right-0 w-72 h-72 bg-ai-purple/15 rounded-full blur-[100px]" aria-hidden="true"></div>
+
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-3xl mx-auto mb-14 reveal">
+      <div class="inline-block pill bg-emerald-100 text-emerald-700 mb-4">04 — SẢN PHẨM ĐẦU RA</div>
+      <h2 class="font-heading font-extrabold text-3xl sm:text-4xl lg:text-5xl text-text-navy mb-4">
+        Bạn sẽ <span class="gradient-text-red-cyan">mang gì về?</span>
+      </h2>
+      <p class="text-lg text-text-gray">2 sản phẩm bắt buộc, hoàn thành ngay tại lớp — không phải bài tập về nhà.</p>
+    </div>
+
+    <div class="grid lg:grid-cols-2 gap-6 lg:gap-8 reveal-stagger">
+      <!-- Sản phẩm 1 -->
+      <div class="card p-8 relative overflow-hidden">
+        <div class="absolute -top-10 -right-10 w-40 h-40 bg-viettel/10 rounded-full blur-2xl"></div>
+        <div class="relative">
+          <div class="flex items-center justify-between mb-5">
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-viettel to-viettel-dark flex items-center justify-center text-3xl shadow-cta">
+              🎯
+            </div>
+            <div class="text-right">
+              <div class="text-xs font-bold text-text-gray uppercase tracking-widest">Tối đa</div>
+              <div class="text-3xl font-heading font-extrabold gradient-text-red-cyan">8 điểm</div>
+            </div>
+          </div>
+          <div class="text-xs font-bold text-viettel uppercase tracking-widest mb-1">Sản phẩm 1 · Bắt buộc</div>
+          <h3 class="font-heading font-bold text-2xl text-text-navy mb-3">Thiết kế Slide bằng AI</h3>
+          <p class="text-text-gray leading-relaxed mb-4">Một bộ slide hoàn chỉnh dùng được tuần sau — chuẩn brand Viettel, có cấu trúc rõ ràng, sinh ra từ tài liệu nguồn của chính bạn.</p>
+          <ul class="space-y-2 text-sm">
+            <li class="flex items-center gap-2 text-text-navy"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Tài liệu nguồn chuẩn</li>
+            <li class="flex items-center gap-2 text-text-navy"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Slide xuất bản (PPTX/PDF)</li>
+            <li class="flex items-center gap-2 text-text-navy"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Skill Claude tái sử dụng</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Sản phẩm 2 -->
+      <div class="card p-8 relative overflow-hidden">
+        <div class="absolute -top-10 -right-10 w-40 h-40 bg-ai-cyan/10 rounded-full blur-2xl"></div>
+        <div class="relative">
+          <div class="flex items-center justify-between mb-5">
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-ai-cyan to-ai-purple flex items-center justify-center text-3xl shadow-glow-cyan">
+              🌟
+            </div>
+            <div class="text-right">
+              <div class="text-xs font-bold text-text-gray uppercase tracking-widest">Bonus</div>
+              <div class="text-3xl font-heading font-extrabold gradient-text-red-cyan">2 điểm</div>
+            </div>
+          </div>
+          <div class="text-xs font-bold text-ai-purple uppercase tracking-widest mb-1">Sản phẩm 2 · Bonus</div>
+          <h3 class="font-heading font-bold text-2xl text-text-navy mb-3">Landing Page bằng AI</h3>
+          <p class="text-text-gray leading-relaxed mb-4">Một URL thật, public trên GitHub Pages, hoạt động trên mọi thiết bị — minh chứng năng lực Vibe Coding của bạn.</p>
+          <ul class="space-y-2 text-sm">
+            <li class="flex items-center gap-2 text-text-navy"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Landing page responsive</li>
+            <li class="flex items-center gap-2 text-text-navy"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> URL public miễn phí</li>
+            <li class="flex items-center gap-2 text-text-navy"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Mã nguồn đã version control</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Total score -->
+    <div class="mt-10 reveal">
+      <div class="max-w-2xl mx-auto bg-gradient-to-r from-text-navy to-navy text-white rounded-2xl p-7 lg:p-8 flex flex-col sm:flex-row items-center justify-between gap-5 shadow-card-hover">
+        <div class="flex items-center gap-4">
+          <div class="text-5xl">📊</div>
+          <div>
+            <div class="text-sm text-white/70 font-semibold uppercase tracking-widest">Tổng điểm</div>
+            <div class="font-heading font-extrabold text-3xl">10 / 10</div>
+          </div>
+        </div>
+        <div class="text-center sm:text-right">
+          <div class="text-sm text-white/70">Đạt</div>
+          <div class="font-heading font-extrabold text-2xl gradient-text-red-cyan">≥ 7 điểm</div>
+          <div class="text-xs text-white/60 mt-1">để nhận chứng nhận</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [08] THÔNG TIN CHƯƠNG TRÌNH
+============================================================ -->
+<section class="section-pad bg-bg-soft">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-3xl mx-auto mb-12 reveal">
+      <div class="inline-block pill bg-viettel/10 text-viettel mb-4">05 — THÔNG TIN CHƯƠNG TRÌNH</div>
+      <h2 class="font-heading font-extrabold text-3xl sm:text-4xl lg:text-6xl text-text-navy mb-4 leading-[1.25] pb-2">
+        💯 <span class="gradient-text-red-cyan inline-block leading-[1.25] pb-1">100% MIỄN PHÍ</span><br>
+        cho CBCNV VTNet
+      </h2>
+    </div>
+
+    <!-- Info table -->
+    <div class="bg-white rounded-3xl shadow-card p-6 lg:p-10 mb-10 reveal">
+      <div class="grid md:grid-cols-2 gap-x-8">
+        <div class="flex items-start gap-4 py-5 border-b border-gray-100 md:border-r md:pr-8">
+          <div class="w-12 h-12 rounded-xl bg-viettel/10 flex items-center justify-center flex-shrink-0">
+            <i data-lucide="calendar" class="w-6 h-6 text-viettel"></i>
+          </div>
+          <div>
+            <div class="text-xs font-bold text-text-gray uppercase tracking-widest mb-1">Thời gian</div>
+            <div class="font-heading font-bold text-text-navy text-lg">8h30 – 12h00</div>
+            <div class="text-text-gray text-sm">Thứ Sáu, ngày 08/05/2026</div>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-4 py-5 border-b border-gray-100">
+          <div class="w-12 h-12 rounded-xl bg-ai-cyan/10 flex items-center justify-center flex-shrink-0">
+            <i data-lucide="clock" class="w-6 h-6 text-ai-cyan"></i>
+          </div>
+          <div>
+            <div class="text-xs font-bold text-text-gray uppercase tracking-widest mb-1">Thời lượng</div>
+            <div class="font-heading font-bold text-text-navy text-lg">3,5 giờ</div>
+            <div class="text-text-gray text-sm">Gọn trong một buổi sáng</div>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-4 py-5 border-b border-gray-100 md:border-r md:pr-8">
+          <div class="w-12 h-12 rounded-xl bg-ai-purple/10 flex items-center justify-center flex-shrink-0">
+            <i data-lucide="graduation-cap" class="w-6 h-6 text-ai-purple"></i>
+          </div>
+          <div>
+            <div class="text-xs font-bold text-text-gray uppercase tracking-widest mb-1">Hình thức</div>
+            <div class="font-heading font-bold text-text-navy text-lg">Blended Learning</div>
+            <div class="text-text-gray text-sm">Online (Zoom) + Offline</div>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-4 py-5 border-b border-gray-100">
+          <div class="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center flex-shrink-0">
+            <i data-lucide="map-pin" class="w-6 h-6 text-emerald-600"></i>
+          </div>
+          <div>
+            <div class="text-xs font-bold text-text-gray uppercase tracking-widest mb-1">Địa điểm</div>
+            <div class="font-heading font-bold text-text-navy text-lg">Tầng G — Toà nhà Thái Bình</div>
+            <div class="text-text-gray text-sm">Hoặc tham gia qua Zoom</div>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-4 py-5 md:col-span-2">
+          <div class="w-12 h-12 rounded-xl bg-amber-50 flex items-center justify-center flex-shrink-0">
+            <i data-lucide="user-check" class="w-6 h-6 text-amber-600"></i>
+          </div>
+          <div>
+            <div class="text-xs font-bold text-text-gray uppercase tracking-widest mb-1">Hướng dẫn</div>
+            <div class="font-heading font-bold text-text-navy text-lg">Đ/c Đỗ Thị Ngát</div>
+            <div class="text-text-gray text-sm">Phòng Nhân sự, VTNet</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Benefits -->
+    <div class="grid md:grid-cols-3 gap-5 reveal-stagger">
+      <div class="card p-6 text-center">
+        <div class="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center mb-4">
+          <i data-lucide="award" class="w-7 h-7 text-white"></i>
+        </div>
+        <h3 class="font-heading font-bold text-lg text-text-navy mb-2">Chứng nhận nội bộ</h3>
+        <p class="text-sm text-text-gray">Đáp ứng KNL kỹ năng AI VTNet 2026 — ghi nhận chính thức.</p>
+      </div>
+      <div class="card p-6 text-center">
+        <div class="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-br from-ai-cyan to-blue-600 flex items-center justify-center mb-4">
+          <i data-lucide="book-open" class="w-7 h-7 text-white"></i>
+        </div>
+        <h3 class="font-heading font-bold text-lg text-text-navy mb-2">Tài liệu "đọc là làm được"</h3>
+        <p class="text-sm text-text-gray">Bộ prompt mẫu, template, checklist mang về dùng ngay.</p>
+      </div>
+      <div class="card p-6 text-center">
+        <div class="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-br from-ai-purple to-pink-600 flex items-center justify-center mb-4">
+          <i data-lucide="gift" class="w-7 h-7 text-white"></i>
+        </div>
+        <h3 class="font-heading font-bold text-lg text-text-navy mb-2">Bonus tài liệu mở rộng</h3>
+        <p class="text-sm text-text-gray">Claude for PowerPoint/Excel/Word/Chrome — dùng AI sâu hơn.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [09] FAQ
+============================================================ -->
+<section class="section-pad relative bg-gradient-to-b from-bg-soft via-white to-bg-soft">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12 reveal">
+      <div class="inline-block pill bg-ai-purple/10 text-ai-purple mb-4">06 — CÂU HỎI THƯỜNG GẶP</div>
+      <h2 class="font-heading font-extrabold text-3xl sm:text-4xl lg:text-5xl text-text-navy mb-4">
+        Bạn có đang <span class="gradient-text-red-cyan">phân vân?</span>
+      </h2>
+      <p class="text-lg text-text-gray">Hỏi gì cũng được — chúng tôi đã tổng hợp 6 câu phổ biến nhất.</p>
+    </div>
+
+    <div class="space-y-3 reveal" id="faqList">
+      <!-- FAQ 1 -->
+      <div class="faq-item card p-0 overflow-hidden">
+        <button class="faq-trigger w-full flex items-center justify-between p-5 lg:p-6 text-left">
+          <span class="font-heading font-bold text-base lg:text-lg text-text-navy pr-4">1. Tôi không biết code có học được không?</span>
+          <i data-lucide="chevron-down" class="faq-icon w-5 h-5 text-viettel flex-shrink-0"></i>
+        </button>
+        <div class="faq-content px-5 lg:px-6 pb-5 lg:pb-6 text-text-gray leading-relaxed">
+          <strong class="text-text-navy">Tuyệt đối được.</strong> Khoá này thiết kế cho người chưa từng viết một dòng code. Tinh thần Vibe Coding là: bạn mô tả ý tưởng bằng tiếng Việt, AI sinh ra sản phẩm. Vai trò của bạn là người chỉ đạo — không phải lập trình viên.
+        </div>
+      </div>
+
+      <!-- FAQ 2 -->
+      <div class="faq-item card p-0 overflow-hidden">
+        <button class="faq-trigger w-full flex items-center justify-between p-5 lg:p-6 text-left">
+          <span class="font-heading font-bold text-base lg:text-lg text-text-navy pr-4">2. Cần chuẩn bị gì trước khi đến lớp?</span>
+          <i data-lucide="chevron-down" class="faq-icon w-5 h-5 text-viettel flex-shrink-0"></i>
+        </button>
+        <div class="faq-content px-5 lg:px-6 pb-5 lg:pb-6 text-text-gray leading-relaxed">
+          Chỉ 3 thứ: <strong class="text-text-navy">(1)</strong> Laptop cá nhân với Chrome/Edge mới nhất, <strong class="text-text-navy">(2)</strong> Tài khoản Google hoạt động, <strong class="text-text-navy">(3)</strong> Tinh thần "thử nó xem sao". Không cần đọc trước tài liệu — chúng ta sẽ học bằng tay luôn.
+        </div>
+      </div>
+
+      <!-- FAQ 3 -->
+      <div class="faq-item card p-0 overflow-hidden">
+        <button class="faq-trigger w-full flex items-center justify-between p-5 lg:p-6 text-left">
+          <span class="font-heading font-bold text-base lg:text-lg text-text-navy pr-4">3. Tài khoản AI có cần bản trả phí không?</span>
+          <i data-lucide="chevron-down" class="faq-icon w-5 h-5 text-viettel flex-shrink-0"></i>
+        </button>
+        <div class="faq-content px-5 lg:px-6 pb-5 lg:pb-6 text-text-gray leading-relaxed">
+          <strong class="text-text-navy">Không bắt buộc.</strong> Bản miễn phí của Claude, Gemini, NotebookLM và Canva đủ để hoàn thành cả 2 sản phẩm trong khuôn khổ khoá. Nếu bạn muốn dùng tính năng nâng cao về sau, đó là lựa chọn cá nhân.
+        </div>
+      </div>
+
+      <!-- FAQ 4 -->
+      <div class="faq-item card p-0 overflow-hidden">
+        <button class="faq-trigger w-full flex items-center justify-between p-5 lg:p-6 text-left">
+          <span class="font-heading font-bold text-base lg:text-lg text-text-navy pr-4">4. Làm sao để được cấp chứng nhận?</span>
+          <i data-lucide="chevron-down" class="faq-icon w-5 h-5 text-viettel flex-shrink-0"></i>
+        </button>
+        <div class="faq-content px-5 lg:px-6 pb-5 lg:pb-6 text-text-gray leading-relaxed">
+          Hoàn thành <strong class="text-text-navy">2 sản phẩm</strong> (Slide bắt buộc + Landing Page bonus) đạt tổng <strong class="text-text-navy">≥ 7/10 điểm</strong>. Chấm điểm dựa trên rubric công khai từ đầu khoá — minh bạch, không có "điểm cảm tính".
+        </div>
+      </div>
+
+      <!-- FAQ 5 -->
+      <div class="faq-item card p-0 overflow-hidden">
+        <button class="faq-trigger w-full flex items-center justify-between p-5 lg:p-6 text-left">
+          <span class="font-heading font-bold text-base lg:text-lg text-text-navy pr-4">5. Nếu không đạt 7/10 thì sao?</span>
+          <i data-lucide="chevron-down" class="faq-icon w-5 h-5 text-viettel flex-shrink-0"></i>
+        </button>
+        <div class="faq-content px-5 lg:px-6 pb-5 lg:pb-6 text-text-gray leading-relaxed">
+          Bạn vẫn được dự đợt sau và <strong class="text-text-navy">giữ nguyên toàn bộ tài liệu, prompt mẫu, sản phẩm đã làm</strong>. Học AI là quá trình — không có chuyện "trượt là mất". Mục tiêu là bạn dùng được AI vào công việc thật.
+        </div>
+      </div>
+
+      <!-- FAQ 6 -->
+      <div class="faq-item card p-0 overflow-hidden">
+        <button class="faq-trigger w-full flex items-center justify-between p-5 lg:p-6 text-left">
+          <span class="font-heading font-bold text-base lg:text-lg text-text-navy pr-4">6. Tôi học online có nhận được chứng nhận không?</span>
+          <i data-lucide="chevron-down" class="faq-icon w-5 h-5 text-viettel flex-shrink-0"></i>
+        </button>
+        <div class="faq-content px-5 lg:px-6 pb-5 lg:pb-6 text-text-gray leading-relaxed">
+          <strong class="text-text-navy">Có — không khác offline.</strong> Hình thức Blended Learning đảm bảo học viên Zoom có cùng trải nghiệm: chia phòng nhỏ, mentor hỗ trợ, chấm sản phẩm cuối buổi. Quan trọng là sản phẩm bạn nộp.
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact box -->
+    <div class="mt-10 text-center reveal">
+      <p class="text-text-gray mb-4">Còn thắc mắc khác?</p>
+      <div class="inline-flex flex-col sm:flex-row gap-3">
+        <a href="tel:0989208017" class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-viettel/10 text-viettel font-semibold hover:bg-viettel/15 transition">
+          <i data-lucide="phone" class="w-4 h-4"></i> Liên hệ Đ/c Minh — 0989 208 017
+        </a>
+        <a href="https://zalo.me/0989208017" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-ai-cyan/10 text-ai-cyan font-semibold hover:bg-ai-cyan/15 transition">
+          <i data-lucide="message-circle" class="w-4 h-4"></i> Chat Zalo
+        </a>
+        <a href="mailto:minhmn@viettel.com.vn" class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-text-navy/5 text-text-navy font-semibold hover:bg-text-navy/10 transition">
+          <i data-lucide="mail" class="w-4 h-4"></i> Email
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [10] CTA CUỐI
+============================================================ -->
+<section id="dang-ky" class="section-pad relative overflow-hidden bg-cta-gradient">
+  <!-- Decorative -->
+  <div class="absolute top-0 left-0 w-full h-full opacity-30" aria-hidden="true">
+    <div class="absolute top-10 left-10 w-72 h-72 bg-ai-cyan/30 rounded-full blur-[120px]"></div>
+    <div class="absolute bottom-10 right-10 w-96 h-96 bg-viettel/40 rounded-full blur-[140px]"></div>
+    <div class="absolute top-1/2 left-1/2 w-72 h-72 bg-ai-purple/30 rounded-full blur-[120px]"></div>
+  </div>
+
+  <div class="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <!-- Headline -->
+    <div class="reveal">
+      <h2 class="font-heading font-extrabold text-white text-4xl sm:text-5xl lg:text-7xl leading-[1.3] mb-3">
+        🔥 AI không thay thế bạn.
+      </h2>
+      <h2 class="font-heading font-extrabold text-4xl sm:text-5xl lg:text-7xl leading-[1.3] mb-10">
+        <span class="gradient-text-ai">Người biết dùng AI</span><br>
+        <span class="gradient-text-ai">sẽ thay thế bạn.</span>
+      </h2>
+    </div>
+
+    <!-- Countdown -->
+    <div class="mb-10 reveal" style="transition-delay: 200ms;">
+      <div class="text-sm text-white/70 font-semibold uppercase tracking-widest mb-4">⏳ Hạn đăng ký kết thúc sau</div>
+      <div class="grid grid-cols-4 gap-2 sm:gap-4 max-w-2xl mx-auto">
+        <div class="bg-white/10 backdrop-blur-md border border-white/15 rounded-2xl p-4 sm:p-6">
+          <div id="cd-days" class="text-3xl sm:text-5xl lg:text-6xl font-heading font-extrabold text-white tabular-nums">00</div>
+          <div class="text-xs text-white/70 font-semibold uppercase tracking-widest mt-1">Ngày</div>
+        </div>
+        <div class="bg-white/10 backdrop-blur-md border border-white/15 rounded-2xl p-4 sm:p-6">
+          <div id="cd-hours" class="text-3xl sm:text-5xl lg:text-6xl font-heading font-extrabold text-white tabular-nums">00</div>
+          <div class="text-xs text-white/70 font-semibold uppercase tracking-widest mt-1">Giờ</div>
+        </div>
+        <div class="bg-white/10 backdrop-blur-md border border-white/15 rounded-2xl p-4 sm:p-6">
+          <div id="cd-mins" class="text-3xl sm:text-5xl lg:text-6xl font-heading font-extrabold text-white tabular-nums">00</div>
+          <div class="text-xs text-white/70 font-semibold uppercase tracking-widest mt-1">Phút</div>
+        </div>
+        <div class="bg-white/10 backdrop-blur-md border border-white/15 rounded-2xl p-4 sm:p-6">
+          <div id="cd-secs" class="text-3xl sm:text-5xl lg:text-6xl font-heading font-extrabold text-ai-cyan tabular-nums glow-text">00</div>
+          <div class="text-xs text-white/70 font-semibold uppercase tracking-widest mt-1">Giây</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Big CTA -->
+    <div class="reveal" style="transition-delay: 300ms;">
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSeQahPyf_SKX8_Hl6cULX3S8hlCovC98bHRhV2ZvNA3tiz1BQ/viewform?usp=publish-editor" target="_blank" rel="noopener" id="mainRegisterBtn"
+         class="btn-primary pulse-glow inline-flex items-center justify-center gap-3 px-8 sm:px-12 py-5 sm:py-6 rounded-full font-heading font-extrabold text-base sm:text-xl">
+        <i data-lucide="rocket" class="w-6 h-6"></i>
+        <span>ĐĂNG KÝ NGAY — GIỮ CHỖ TRƯỚC 07/05/2026</span>
+      </a>
+
+      <p class="text-white/70 text-xs sm:text-sm mt-5 mx-auto whitespace-nowrap overflow-x-auto px-4">
+        Chỉ cần 2 phút điền form&nbsp;•&nbsp;Miễn phí 100% cho CBCNV VTNet&nbsp;•&nbsp;Hẹn gặp bạn sáng Thứ&nbsp;Sáu
+      </p>
+
+      <!-- Commitment -->
+      <div class="mt-8 inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-emerald-500/15 border border-emerald-400/30 text-emerald-200 font-medium text-sm">
+        <i data-lucide="shield-check" class="w-5 h-5"></i>
+        Mỗi học viên ra khỏi lớp đều mang theo sản phẩm hoàn chỉnh có thể dùng tuần sau
+      </div>
+
+      <!-- Phone -->
+      <div class="mt-8">
+        <a href="tel:0989208017" class="inline-flex items-center gap-2 text-white/80 hover:text-ai-cyan transition text-sm">
+          <i data-lucide="phone" class="w-4 h-4"></i>
+          Hoặc gọi trực tiếp: <strong class="text-white">0989 208 017</strong> — Đ/c Mai Ngọc Minh
+        </a>
+      </div>
+
+      <!-- Closing -->
+      <div class="mt-12 pt-8 border-t border-white/10">
+        <p class="text-white/60 italic font-heading text-base sm:text-lg">
+          — Hẹn gặp lại bạn buổi học <span class="gradient-text-ai font-bold not-italic">Thiết kế Slide cơ bản – nâng cao</span> —
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [11] FOOTER
+============================================================ -->
+<footer class="bg-navy-deep text-white pt-14 pb-24 lg:pb-20">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid md:grid-cols-3 gap-10 lg:gap-14 mb-10">
+      <!-- Brand -->
+      <div>
+        <div class="flex items-center gap-3 mb-4">
+          <img src="data:image/png;base64,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" alt="Viettel Networks" class="h-12 w-auto rounded-lg" />
+          <div class="leading-tight pl-3 border-l border-white/15">
+            <div class="text-[10px] font-semibold text-white/50 tracking-widest uppercase">Khoá đào tạo</div>
+            <div class="text-base font-heading font-bold">AI VIBE 2026</div>
+          </div>
+        </div>
+        <p class="text-sm text-white/60 leading-relaxed mb-5">Tổng Công ty Mạng lưới — Viettel Group. Đào tạo nội bộ chuẩn năng lực số.</p>
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-viettel/15 border border-viettel/30 text-viettel font-bold text-xs">
+          <i data-lucide="badge-check" class="w-3.5 h-3.5"></i>
+          Đáp ứng KNL — VTNet 2026
+        </div>
+      </div>
+
+      <!-- Menu -->
+      <div>
+        <h4 class="font-heading font-bold text-sm uppercase tracking-widest text-white/80 mb-4">Khám phá</h4>
+        <ul class="space-y-2.5 text-sm">
+          <li><a href="#muc-tieu" class="text-white/70 hover:text-ai-cyan transition">Mục tiêu chương trình</a></li>
+          <li><a href="#doi-tuong" class="text-white/70 hover:text-ai-cyan transition">Đối tượng tham gia</a></li>
+          <li><a href="#noi-dung" class="text-white/70 hover:text-ai-cyan transition">Nội dung đào tạo</a></li>
+          <li><a href="#quyen-loi" class="text-white/70 hover:text-ai-cyan transition">Quyền lợi học viên</a></li>
+          <li><a href="#dang-ky" class="text-white/70 hover:text-ai-cyan transition">Đăng ký ngay</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact -->
+      <div>
+        <h4 class="font-heading font-bold text-sm uppercase tracking-widest text-white/80 mb-4">Liên hệ tổ chức</h4>
+        <div class="space-y-3 text-sm">
+          <div>
+            <div class="text-white font-bold">Đ/c Mai Ngọc Minh</div>
+            <div class="text-white/60 text-xs">Phòng Nhân sự, VTNet</div>
+          </div>
+          <a href="tel:0989208017" class="flex items-center gap-2 text-white/70 hover:text-ai-cyan transition">
+            <i data-lucide="phone" class="w-4 h-4"></i> 0989 208 017
+          </a>
+          <a href="mailto:minhmn@viettel.com.vn" class="flex items-center gap-2 text-white/70 hover:text-ai-cyan transition">
+            <i data-lucide="mail" class="w-4 h-4"></i> minhmn@viettel.com.vn
+          </a>
+          <a href="https://zalo.me/0989208017" target="_blank" rel="noopener" class="flex items-center gap-2 text-white/70 hover:text-ai-cyan transition">
+            <i data-lucide="message-circle" class="w-4 h-4"></i> Zalo: 0989 208 017
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/50">
+      <div>© 2026 Viettel Networks — Tất cả quyền được bảo lưu.</div>
+      <div class="flex items-center gap-2">
+        Designed with <i data-lucide="heart" class="w-3.5 h-3.5 text-viettel fill-viettel"></i> for VTNet team
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ============================================================
+     [12] FLOATING ELEMENTS
+============================================================ -->
+
+<!-- Sticky CTA bar -->
+<div id="stickyCTA" class="sticky-cta">
+  <div class="max-w-7xl mx-auto flex items-center justify-between gap-3">
+    <div class="flex items-center gap-2 text-sm font-bold">
+      <i data-lucide="alarm-clock" class="w-5 h-5 flex-shrink-0"></i>
+      <span class="hidden sm:inline">Còn </span>
+      <span id="stickyDays" class="font-heading">--</span>
+      <span> ngày — Đăng ký ngay</span>
+    </div>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSeQahPyf_SKX8_Hl6cULX3S8hlCovC98bHRhV2ZvNA3tiz1BQ/viewform?usp=publish-editor" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white text-viettel font-bold text-sm whitespace-nowrap hover:scale-105 transition">
+      <i data-lucide="rocket" class="w-4 h-4"></i>
+      <span class="hidden sm:inline">Giữ chỗ</span>
+      <span class="sm:hidden">Đăng ký</span>
+    </a>
+  </div>
+</div>
+
+<!-- FOMO toast -->
+<div id="fomoToast" class="toast">
+  <div class="w-10 h-10 rounded-full bg-gradient-to-br from-ai-cyan to-ai-purple flex items-center justify-center text-white flex-shrink-0">
+    <i data-lucide="user-plus" class="w-5 h-5"></i>
+  </div>
+  <div class="flex-1 min-w-0">
+    <div id="toastName" class="font-bold text-text-navy text-sm">Đ/c Nguyễn Văn A</div>
+    <div class="text-xs text-text-gray">vừa đăng ký <span id="toastTime">3 phút</span> trước</div>
+  </div>
+</div>
+
+<!-- Zalo floating -->
+<a href="https://zalo.me/0989208017" target="_blank" rel="noopener" class="zalo-btn" aria-label="Chat Zalo với Đ/c Minh">
+  <i data-lucide="message-circle" class="w-6 h-6"></i>
+</a>
+
+<!-- Exit intent popup -->
+<div id="exitPopup" class="exit-popup-bg" role="dialog" aria-modal="true" aria-labelledby="exitPopupTitle">
+  <div class="exit-popup-card">
+    <button id="exitClose" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-text-gray transition" aria-label="Đóng">
+      <i data-lucide="x" class="w-4 h-4"></i>
+    </button>
+    <div class="text-5xl mb-3">⏳</div>
+    <h3 id="exitPopupTitle" class="font-heading font-extrabold text-2xl lg:text-3xl text-text-navy mb-3 leading-tight">
+      Đừng để lỡ chứng nhận <span class="gradient-text-red-cyan">KNL!</span>
+    </h3>
+    <p class="text-text-gray mb-6">Đăng ký mất 2 phút. Sáng Thứ Sáu, bạn sẽ ra khỏi lớp với 2 sản phẩm AI thật, dùng được tuần sau.</p>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSeQahPyf_SKX8_Hl6cULX3S8hlCovC98bHRhV2ZvNA3tiz1BQ/viewform?usp=publish-editor" target="_blank" rel="noopener"
+       class="btn-primary inline-flex w-full items-center justify-center gap-2 px-6 py-4 rounded-full font-bold text-base shadow-cta">
+      <i data-lucide="rocket" class="w-5 h-5"></i>
+      Đăng ký ngay — 2 phút thôi
+    </a>
+    <button id="exitDecline" class="block w-full mt-3 text-sm text-text-gray hover:text-text-navy transition">
+      Để lần khác — đóng cửa sổ
+    </button>
+  </div>
+</div>
+
+<!-- ============================================================
+     JAVASCRIPT
+============================================================ -->
+<script>
+/* ==== Init Lucide icons ==== */
+lucide.createIcons();
+
+/* ==== NAV: blur on scroll + mobile menu ==== */
+const nav = document.getElementById('mainNav');
+const stickyCTA = document.getElementById('stickyCTA');
+const HERO_THRESHOLD = 100;
+
+window.addEventListener('scroll', () => {
+  const y = window.scrollY;
+  // Nav giữ trạng thái nav-scrolled ổn định (không toggle)
+
+  // Sticky CTA bar appears after hero
+  if (y > 700) {
+    stickyCTA.classList.add('show');
+    document.body.classList.add('has-sticky-bar');
+  } else {
+    stickyCTA.classList.remove('show');
+    document.body.classList.remove('has-sticky-bar');
+  }
+});
+
+document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+  document.getElementById('mobileMenu').classList.toggle('hidden');
+});
+// Close mobile menu when click link
+document.querySelectorAll('#mobileMenu a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('mobileMenu').classList.add('hidden'));
+});
+
+/* ==== PARTICLES (Hero) ==== */
+(function spawnParticles() {
+  const field = document.getElementById('particleField');
+  if (!field) return;
+  const count = window.innerWidth < 768 ? 18 : 36;
+  const colors = ['#00D4FF', '#7C3AED', '#EE0033'];
+  for (let i = 0; i < count; i++) {
+    const p = document.createElement('span');
+    p.className = 'particle';
+    const size = Math.random() * 4 + 2;
+    p.style.width = size + 'px';
+    p.style.height = size + 'px';
+    p.style.background = colors[Math.floor(Math.random() * colors.length)];
+    p.style.left = Math.random() * 100 + '%';
+    p.style.top = Math.random() * 100 + '%';
+    p.style.setProperty('--tx', (Math.random() * 80 - 40) + 'px');
+    p.style.setProperty('--ty', (Math.random() * -80 - 20) + 'px');
+    p.style.animationDelay = (Math.random() * 8) + 's';
+    p.style.animationDuration = (6 + Math.random() * 6) + 's';
+    field.appendChild(p);
+  }
+})();
+
+/* ==== INTERSECTION OBSERVER: reveal + counters ==== */
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('is-visible');
+      // Trigger counter
+      entry.target.querySelectorAll('.counter').forEach(el => {
+        if (el.dataset.done) return;
+        el.dataset.done = '1';
+        animateCounter(el);
+      });
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.reveal, .reveal-stagger').forEach(el => io.observe(el));
+
+function animateCounter(el) {
+  const target = parseFloat(el.dataset.target);
+  const decimals = parseInt(el.dataset.decimals || '0', 10);
+  const duration = 1600;
+  const start = performance.now();
+  function tick(now) {
+    const t = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - t, 3); // easeOutCubic
+    const value = (target * eased);
+    el.textContent = decimals > 0 ? value.toFixed(decimals).replace('.', ',') : Math.round(value);
+    if (t < 1) requestAnimationFrame(tick);
+    else el.textContent = decimals > 0 ? target.toFixed(decimals).replace('.', ',') : target;
+  }
+  requestAnimationFrame(tick);
+}
+
+/* ==== TABS (Section nội dung) ==== */
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => {
+      b.classList.remove('active');
+      b.classList.add('text-text-navy');
+    });
+    btn.classList.add('active');
+    btn.classList.remove('text-text-navy');
+
+    const target = btn.dataset.tab;
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+    document.getElementById('tab-' + target).classList.remove('hidden');
+
+    // Re-trigger reveal animation
+    const stagger = document.querySelector('#tab-' + target + ' .reveal-stagger');
+    if (stagger) {
+      stagger.classList.remove('is-visible');
+      void stagger.offsetWidth;
+      stagger.classList.add('is-visible');
+    }
+  });
+});
+
+/* ==== FAQ accordion ==== */
+document.querySelectorAll('.faq-trigger').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.closest('.faq-item');
+    item.classList.toggle('open');
+  });
+});
+
+/* ==== COUNTDOWN to 23:59:59 07/05/2026 ==== */
+const DEADLINE = new Date('2026-05-07T23:59:59+07:00').getTime();
+
+function updateCountdown() {
+  const now = Date.now();
+  const diff = DEADLINE - now;
+  if (diff <= 0) {
+    ['cd-days','cd-hours','cd-mins','cd-secs'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = '00';
+    });
+    const sd = document.getElementById('stickyDays');
+    if (sd) sd.textContent = '0';
+    return;
+  }
+  const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const m = Math.floor((diff / (1000 * 60)) % 60);
+  const s = Math.floor((diff / 1000) % 60);
+
+  const pad = n => String(n).padStart(2, '0');
+  const setText = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+  setText('cd-days', pad(d));
+  setText('cd-hours', pad(h));
+  setText('cd-mins', pad(m));
+  setText('cd-secs', pad(s));
+  setText('stickyDays', d);
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+/* ==== FOMO TOAST ==== */
+const fakeRegistrants = [
+  'Đ/c Nguyễn Văn An — TT.KTKV1',
+  'Đ/c Trần Thị Bình — TT.KTKV2',
+  'Đ/c Lê Hoàng Cường — Phòng KH',
+  'Đ/c Phạm Thanh Dung — TT.KTKV3',
+  'Đ/c Hoàng Minh Đức — Phòng KT',
+  'Đ/c Vũ Thu Hà — Phòng NS',
+  'Đ/c Đặng Quốc Khánh — TT.VHKT',
+];
+const fakeTimes = ['1 phút', '3 phút', '5 phút', '8 phút', '12 phút', '20 phút'];
+
+const toast = document.getElementById('fomoToast');
+const toastName = document.getElementById('toastName');
+const toastTime = document.getElementById('toastTime');
+let toastIdx = 0;
+
+function showFomoToast() {
+  toastName.textContent = fakeRegistrants[toastIdx % fakeRegistrants.length];
+  toastTime.textContent = fakeTimes[Math.floor(Math.random() * fakeTimes.length)];
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 4500);
+  toastIdx++;
+}
+// First toast after 8s, then every 18s
+setTimeout(() => {
+  showFomoToast();
+  setInterval(showFomoToast, 18000);
+}, 8000);
+
+/* ==== EXIT INTENT POPUP (1 lần / session) ==== */
+const exitPopup = document.getElementById('exitPopup');
+const exitClose = document.getElementById('exitClose');
+const exitDecline = document.getElementById('exitDecline');
+let exitShown = false;
+
+function tryShowExit() {
+  if (exitShown) return;
+  // Don't show too early
+  if (Date.now() - pageLoadTime < 8000) return;
+  exitShown = true;
+  exitPopup.classList.add('show');
+}
+
+const pageLoadTime = Date.now();
+
+document.addEventListener('mouseleave', (e) => {
+  if (e.clientY <= 0) tryShowExit();
+});
+
+function closeExit() { exitPopup.classList.remove('show'); }
+exitClose.addEventListener('click', closeExit);
+exitDecline.addEventListener('click', closeExit);
+exitPopup.addEventListener('click', (e) => {
+  if (e.target === exitPopup) closeExit();
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && exitPopup.classList.contains('show')) closeExit();
+});
+
+/* ==== SMOOTH SCROLL fallback for older browsers ==== */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', (e) => {
+    const id = a.getAttribute('href');
+    if (id.length > 1) {
+      const target = document.querySelector(id);
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  });
+});
+
+/* ==== Re-render lucide icons after dynamic content ==== */
+setTimeout(() => lucide.createIcons(), 100);
+</script>
+
+<!-- ================================================================
+  HƯỚNG DẪN TUỲ CHỈNH (xem source code để đọc chi tiết)
+  
+  1. Link Google Form đã gắn — đổi tại các thẻ <a href="https://docs.google.com/forms/...">
+  2. Thay liên hệ: số 0989208017, email minhmn@viettel.com.vn
+  3. Đổi deadline: tìm "DEADLINE" trong JavaScript
+  4. Đổi tên trong toast FOMO: tìm "fakeRegistrants"
+  
+  Build: AI VIBE 2026 · Single-file HTML · TailwindCSS CDN
+================================================================ -->
+</body>
+</html>
